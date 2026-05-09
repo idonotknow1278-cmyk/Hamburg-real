@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="favicon.png">
+    <title>Educational Math Flash Cards (credit: nikehub)</title> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --primary-hover: #2563eb;
+            --primary-dark: #0f172a;
+            --primary-light: #94a3b8;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --background-color: #0a0a0a;
+            --card-bg: #141212;
+            --card-border: #1e293b;
+            --shadow: rgba(0, 0, 0, 0.4);
+            --popup-bg: #1e293b;
+            --header-bg: #0f172a;
+            --header-color: #ffffff;
+            --accent-glow: rgba(59, 130, 246, 0.2);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--background-color); 
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            color: var(--text-color); 
+            min-height: 100vh; 
+            overflow-x: hidden; 
+        }
+        
+        #custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 999999;
+            transform-origin: top left;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #custom-cursor svg {
+            width: 46px;
+            height: 46px;
+        }
+
+        .cursor-path {
+            fill: #ffffff;
+            stroke: #000000;
+            stroke-width: 3.0;
+        }
+
+        .cursor-hover {
+            transform: scale(5.8);
+        }
+        
+        header { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); padding: 0.75rem 1rem; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--card-border); }
+        .header-content { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; gap: 1.5rem; }
+        
+        .logo { font-size: 1.6rem; font-weight: 900; display: flex; align-items: center; gap: 10px; }
+        .logo i { color: var(--primary-color); }
+
+        .search-container { display: flex; gap: 8px; flex: 1; max-width: 700px; }
+        #searchBar { padding: 0.75rem 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--card-border); flex-grow: 1; background: rgba(255, 255, 255, 0.03); color: white; outline: none; transition: 0.3s; }
+        #searchBar:focus { border-color: var(--primary-color); background: rgba(255, 255, 255, 0.07); }
+        
+        #container { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.25rem; padding: 2rem; max-width: 1400px; margin: 0 auto; }
+        
+        .zone-item { background-color: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-lg); overflow: hidden; transition: all 0.3s ease; position: relative; }
+        .zone-item:hover { transform: translateY(-4px); border-color: var(--primary-color); box-shadow: 0 10px 20px var(--accent-glow); }
+        .zone-item img { width: 100%; height: 160px; object-fit: cover; border-bottom: 1px solid var(--card-border); }
+        .zone-info { padding: 1rem; text-align: center; }
+
+        #zoneViewer { position: fixed; inset: 0; background-color: #000; z-index: 10000; display: none; flex-direction: column; }
+        .zone-header { display: flex; align-items: center; justify-content: space-between; background: #0f172a; padding: 0.75rem 1rem; border-bottom: 1px solid #1e293b; }
+        #zoneFrame { flex-grow: 1; border: none; background: #fff; }
+
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 20000; backdrop-filter: blur(4px); }
+        .modal-content { background: var(--popup-bg); padding: 2rem; border-radius: var(--radius-lg); width: 90%; max-width: 450px; border: 1px solid var(--card-border); animation: slideIn 0.3s ease-out; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .setting-group { margin-bottom: 1.2rem; }
+        .setting-group label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+        .setting-group input, .setting-group select { width: 100%; padding: 0.75rem; background: rgba(0,0,0,0.25); border: 1px solid var(--card-border); border-radius: 8px; color: white; outline: none; }
+        .setting-group input:focus { border-color: var(--primary-color); }
+        
+        .btn { padding: 0.6rem 1.2rem; border-radius: 8px; border: none; font-weight: 600; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-close { background: #7f1d1d; color: white; }
+        .btn-close:hover { background: #b91c1c; }
+        .btn-close-small { background: none; border: none; color: white; font-size: 1.5rem; }
+
+        @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-content">
+        <div class="logo clickable" onclick="window.location.reload()">
+            <i class="fas fa-shield-alt"></i> <span>NikeNetwork Proxy Servers</span>
+        </div>
+        <div class="search-container">
+            <input type="text" id="searchBar" class="clickable" placeholder="Search resources...">
+        </div>
+        <button id="settingsBtn" class="btn clickable" style="background: rgba(255,255,255,0.1); color: white;">
+            <i class="fas fa-sliders-h"></i> Settings
+        </button>
+    </div>
+</header>
+
+<main>
+    <div id="container"></div>
+</main>
+
+<div id="settingsModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2><i class="fas fa-cog"></i> Preferences</h2>
+            <button class="btn-close-small clickable" id="closeSettings">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="setting-group">
+                <label>Emergency Panic Key</label>
+                <input type="text" id="panicKeyInput" class="clickable" maxlength="1" placeholder="Type a key (e.g. ` or q)">
+            </div>
+            <div class="setting-group">
+                <label>Redirect URL</label>
+                <input type="text" id="panicUrlInput" class="clickable" placeholder="https://google.com">
+            </div>
+            <div class="setting-group">
+                <label>Tab Appearance (Cloak)</label>
+                <select id="cloakingSelect" class="clickable">
+                    <option value="none">Default (Math Cards)</option>
+                    <option value="google">Google Search</option>
+                    <option value="drive">Google Drive</option>
+                    <option value="canvas">Canvas LMS</option>
+                    <option value="classroom">Google Classroom</option>
+                </select>
+            </div>
+            <button id="saveSettings" class="btn clickable" style="background: var(--primary-color); color: white; width: 100%; margin-top: 1rem; justify-content: center;">Save Preferences</button>
+        </div>
+    </div>
+</div>
+
+<div id="zoneViewer">
+    <div class="zone-header">
+        <div class="zone-title">
+            <h2 id="zoneName">Resource Name</h2>
+            <span style="color: var(--text-muted); font-size: 0.8rem;">NikeNetwork</span>
+        </div>
+        <div class="zone-controls">
+            <button class="btn clickable" onclick="document.getElementById('zoneFrame').requestFullscreen()" style="background:#1e293b; color:white;">
+                <i class="fas fa-expand"></i> Fullscreen
+            </button>
+            <button class="btn btn-close clickable" onclick="closeProxy()">
+                <i class="fas fa-times"></i> Close
+            </button>
+        </div>
+    </div>
+    <iframe id="zoneFrame"></iframe>
+</div>
+
+<script>
+
+    const proxies = [
+        { name: "NikeNetwork Server 1", url: "https://galaxybrowser.netlify.app/nikenetworkv2", cover: "/favicon.png" },
+        { name: "NikeNetwork Server 2", url: "https://mathwork-1.b-cdn.net", cover: "/favicon.png" },
+        { name: "NikeNetwork Server 3", url: "https://mathwork-2.b-cdn.net/", cover: "/favicon.png" },
+        { name: "NikeNetwork Server 4", url: "https://mathwork-3.b-cdn.net/", cover: "/favicon.png" },
+        { name: "NikeNetwork Server 5", url: "https://my-presentation.pages.dev/", cover: "/favicon.png" },
+        { name: "NikeNetwork Server 6", url: "https://froggies.nikegtag.workers.dev/", cover: "/favicon.png" }
+    ];
+
+    const container = document.getElementById('container');
+    const searchBar = document.getElementById('searchBar');
+    const settingsBtn = document.getElementById('settingsBtn');
+    const settingsModal = document.getElementById('settingsModal');
+    const closeSettings = document.getElementById('closeSettings');
+    const saveSettingsBtn = document.getElementById('saveSettings');
+
+    let config = {
+        panicKey: localStorage.getItem('panicKey') || '`',
+        panicUrl: localStorage.getItem('panicUrl') || 'https://google.com',
+        cloak: localStorage.getItem('tabCloak') || 'none'
+    };
+
+    function applyCloak(type) {
+        const link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+        link.type = 'image/x-icon';
+        link.rel = 'shortcut icon';
+        
+        const cloaks = {
+            'google': { title: 'Google', icon: 'https://www.google.com/favicon.ico' },
+            'drive': { title: 'My Drive - Google Drive', icon: 'https://ssl.gstatic.com/docs/doclist/images/drive_2022q3_32dp.png' },
+            'canvas': { title: 'Dashboard', icon: 'https://du11hjcvx0uqb.cloudfront.net/br/dist/images/favicon-e106157072.ico' },
+            'classroom': { title: 'Classes', icon: 'https://www.gstatic.com/classroom/favicon.png' },
+            'none': { title: 'Educational Math Flash Cards', icon: 'favicon.png' }
+        };
+
+        const active = cloaks[type] || cloaks['none'];
+        document.title = active.title;
+        link.href = active.icon;
+        document.getElementsByTagName('head')[0].appendChild(link);
+    }
+
+    applyCloak(config.cloak);
+
+    settingsBtn.onclick = () => {
+        document.getElementById('panicKeyInput').value = config.panicKey;
+        document.getElementById('panicUrlInput').value = config.panicUrl;
+        document.getElementById('cloakingSelect').value = config.cloak;
+        settingsModal.style.display = 'flex';
+    };
+
+    closeSettings.onclick = () => settingsModal.style.display = 'none';
+
+    saveSettingsBtn.onclick = () => {
+        config.panicKey = document.getElementById('panicKeyInput').value || '`';
+        config.panicUrl = document.getElementById('panicUrlInput').value || 'https://google.com';
+        config.cloak = document.getElementById('cloakingSelect').value;
+        
+        localStorage.setItem('panicKey', config.panicKey);
+        localStorage.setItem('panicUrl', config.panicUrl);
+        localStorage.setItem('tabCloak', config.cloak);
+        
+        applyCloak(config.cloak);
+        settingsModal.style.display = 'none';
+    };
+
+    function displayProxies(list) {
+        container.innerHTML = "";
+        list.forEach(proxy => {
+            const card = document.createElement("div");
+            card.className = "zone-item clickable";
+            card.onclick = () => openProxy(proxy);
+            card.innerHTML = `
+                <img src="${proxy.cover}" alt="${proxy.name}">
+                <div class="zone-info">
+                    <div class="zone-name" style="font-weight:bold;">${proxy.name}</div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+        updateHoverListeners();
+    }
+
+    searchBar.oninput = (e) => {
+        const q = e.target.value.toLowerCase();
+        displayProxies(proxies.filter(p => p.name.toLowerCase().includes(q)));
+    };
+
+    function openProxy(proxy) {
+        document.getElementById('zoneFrame').src = proxy.url;
+        document.getElementById('zoneName').textContent = proxy.name;
+        document.getElementById('zoneViewer').style.display = "flex";
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeProxy() {
+        document.getElementById('zoneViewer').style.display = "none";
+        document.getElementById('zoneFrame').src = "about:blank";
+        document.body.style.overflow = 'auto';
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === config.panicKey) {
+            window.location.replace(config.panicUrl);
+        }
+    });
+
+    displayProxies(proxies);
+    updateHoverListeners();
+</script>
+        <script>
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+  }, false);
+
+  document.addEventListener('keydown', function(e) {
+    if (
+      e.key === 'F12' || 
+      (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'C' || e.key === 'J')) || 
+      (e.ctrlKey && e.key === 'U')
+    ) {
+      e.preventDefault();
+    }
+  }, false);
+</script>
+</body>
+</html>
