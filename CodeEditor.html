@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>IXL | Dashboard</title>
+  <link id="favicon-link" rel="icon" href="https://www.google.com/s2/favicons?sz=64&domain=ixl.com" type="image/png">
+  
+  <script type="importmap">
+    {
+      "imports": {
+        "codemirror": "https://esm.sh/codemirror@6.0.1",
+        "@codemirror/lang-html": "https://esm.sh/@codemirror/lang-html@6.4.9",
+        "@codemirror/theme-one-dark": "https://esm.sh/@codemirror/theme-one-dark@6.1.2"
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --bg-dark: #0f111a;
+      --panel-bg: #1a1d27;
+      --accent: #007bff;
+      --success: #28a745;
+      --border: #2e3244;
+      --text: #e0e6ed;
+    }
+
+    body { 
+      margin: 0; 
+      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; 
+      background: var(--bg-dark); 
+      color: var(--text); 
+      overflow: hidden; 
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header { 
+      padding: 12px 24px; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      background: var(--panel-bg); 
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      z-index: 10;
+    }
+
+    .logo-area { display: flex; align-items: center; gap: 12px; }
+    h1 { margin: 0; font-size: 1rem; letter-spacing: 1px; color: var(--accent); text-transform: uppercase; }
+
+    .main-layout {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    #editor-container { 
+      flex: 1; 
+      border-right: 1px solid var(--border);
+      height: 100%;
+    }
+
+    #preview-container { 
+      flex: 1; 
+      background: #ffffff; 
+      display: flex;
+      flex-direction: column;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: white;
+    }
+
+    .cm-editor { height: 100%; font-size: 14px; }
+
+    .button-group { display: flex; gap: 8px; align-items: center; }
+    
+    button { 
+      padding: 8px 16px; 
+      font-size: 13px; 
+      cursor: pointer; 
+      border: 1px solid transparent;
+      border-radius: 6px; 
+      font-weight: 500; 
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-download { background: var(--success); color: white; }
+    .btn-download:hover { background: #218838; transform: translateY(-1px); }
+    
+    .btn-popout { background: #4b5563; color: white; }
+    .btn-popout:hover { background: #374151; }
+
+    #status { 
+      font-size: 12px; 
+      color: #6b7280; 
+      margin-right: 15px;
+      font-family: monospace;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-dark); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-area">
+      <h1>CodeSpace</h1>
+      <span id="status">Ready</span>
+    </div>
+    <div class="button-group">
+      <button class="btn-popout" onclick="fullPreview()">Full Preview</button>
+      <button class="btn-download" onclick="downloadHTML()">
+        <span>Download</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="main-layout">
+    <div id="editor-container"></div>
+    <div id="preview-container">
+      <iframe id="live-preview"></iframe>
+    </div>
+  </div>
+
+  <script type="module">
+    import { EditorView, basicSetup } from "codemirror";
+    import { html } from "@codemirror/lang-html";
+    import { oneDark } from "@codemirror/theme-one-dark";
+
+    const defaultCode = `<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #f0f2f5; }
+    .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; }
+    h1 { color: #007bff; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Hello World!</h1>
+    <p>Edit the code on the left to see magic happen.</p>
+  </div>
+</body>
+</html>`;
+
+    const savedCode = localStorage.getItem('user-html-code') || defaultCode;
+    const previewFrame = document.getElementById('live-preview');
+
+    const updatePreview = (code) => {
+      previewFrame.srcdoc = code;
+    };
+
+    const editor = new EditorView({
+      doc: savedCode,
+      extensions: [
+        basicSetup,
+        html(),
+        oneDark,
+        EditorView.updateListener.of((update) => {
+          if (update.docChanged) {
+            const code = update.state.doc.toString();
+            localStorage.setItem('user-html-code', code);
+            updatePreview(code);
+            document.getElementById('status').innerText = "Saved " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+          }
+        })
+      ],
+      parent: document.getElementById('editor-container')
+    });
+
+    window.editor = editor;
+    
+    // Initial Load
+    updatePreview(savedCode);
+
+    window.downloadHTML = function() {
+      const code = window.editor.state.doc.toString();
+      const blob = new Blob([code], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'index.html';
+      a.click();
+      URL.revokeObjectURL(url);
+    };
+
+    window.fullPreview = function() {
+      const code = window.editor.state.doc.toString();
+      const newWin = window.open();
+      newWin.document.write(code);
+      newWin.document.close();
+    };
+
+    // Shortcuts
+    document.addEventListener('keydown', e => {
+      if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        window.downloadHTML();
+      }
+    });
+  </script>
+</body>
+</html>
