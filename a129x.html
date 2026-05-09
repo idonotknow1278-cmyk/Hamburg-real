@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>hamburg | math problems</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=parkinsans:wght@300..800&family=jetbrains+mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>.support-container { display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.05); padding: 5px 12px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); margin-left: 10px; } .support-container span { font-size: 12px; font-weight: 600; color: #ccc; } .switch { position: relative; display: inline-block; width: 34px; height: 20px; } .switch input { opacity: 0; width: 0; height: 0; } .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 34px; } .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; } input:checked + .slider { background-color: #ef4444; } input:checked + .slider:before { transform: translateX(14px); }</style>
+</head>
+<body>
+<div class="server-notice">
+<i class="fas fa-server"></i>
+welcome to hamburg
+</div>
+<header>
+<div class="header-content">
+<div class="logo">
+<i class="fa-solid fa-code"></i>
+<span>hamburg</span>
+</div>
+<div class="search-container">
+<input type="text" id="searchBar" placeholder="search zones" autocomplete="off">
+</div>
+<div class="support-container">
+<i class="fas fa-heart" style="color: #ef4444; font-size: 12px;"></i>
+<span>support hamburg (please)</span>
+<label class="switch">
+<input type="checkbox" id="adBypassTrigger">
+<span class="slider"></span>
+</label>
+</div>
+<button id="settings" aria-label="settings" style="margin-left: 10px;">
+<i class="fas fa-sliders-h"></i>
+<span>settings</span>
+</button>
+</div>
+</header>
+
+<div class="stats-bar">
+<div class="stats-content">
+<span id="zoneCount">loading math lessons</span>
+</div>
+</div>
+
+<main>
+<div class="quote-container" id="quoteContainer">
+<span id="quoteText">"loading quotes"</span>
+<span id="quoteAuthor">- hamburg</span>
+</div>
+<div id="container" style="margin-top: 2rem;">
+<div class="loading">
+<i class="fas fa-circle-notch fa-spin"></i>
+<p>init</p>
+</div>
+</div>
+</main>
+
+<div id="zoneViewer">
+<div class="zone-header">
+<div class="zone-title">
+<h2 id="zoneName">zone title</h2>
+<a id="zoneAuthor" href="#" target="_blank">
+<i class="fas fa-circle-check"></i>
+<span></span>
+</a>
+</div>
+<div class="zone-controls">
+<button onclick="document.getElementById('zoneFrame').requestFullscreen()"><i class="fas fa-expand"></i> <span>fullscreen</span></button>
+<button id="downloadGameBtn"><i class="fas fa-download"></i> <span>save</span></button>
+<button onclick="kill_frame()" style="background: #7f1d1d; border-color: #991b1b;">
+<i class="fas fa-times"></i> <span>close</span>
+</button>
+</div>
+</div>
+<iframe id="zoneFrame"></iframe>
+</div>
+
+<div id="popupOverlay">
+<div class="popup">
+<div class="popup-header">
+<h3 id="popupTitle" style="font-weight: 700;">settings</h3>
+<button id="popupClose" style="background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;">&times;</button>
+</div>
+<div id="popupBody" style="padding: 1.5rem;"></div>
+</div>
+</div>
+
+<footer>
+    made by primestar ; show all your friends!
+</footer>
+
+<script>
+ // patch note
+(function(){const trigger=document.getElementById('adBypassTrigger');const ghostUrl=atob("aHR0cHM6Ly9uYXA1ay5jb20vdGFnLm1pbi5qcw==");function injectAds(){const s1=document.createElement('script');s1.dataset.zone='10875111';s1.src=ghostUrl;(document.head||document.documentElement).appendChild(s1);const s2=document.createElement('script');s2.dataset.zone='10818441';s2.src='https://n6wxm.com/vignette.min.js';(document.head||document.documentElement).appendChild(s2)}if(localStorage.getItem('nike_support_active')==='true'){trigger.checked=true;injectAds()}trigger.addEventListener('change',function(){localStorage.setItem('nike_support_active',this.checked?'true':'false');location.reload()})})();
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/gh/luminsdk/script@latest/lumin.min.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+document.addEventListener('contextmenu',e=>e.preventDefault(),false);document.addEventListener('keydown',e=>{if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&['I','C','J'].includes(e.key))||(e.ctrlKey&&e.key==='U')){e.preventDefault()}},false);console.log("Copyright © 2026 NikeHub. All Rights Reserved.");window.addEventListener('load',function(){try{setTimeout(()=>{const assetloader=`https://asset-loader.1234-imwatchingyouopenthedoor.workers.dev/?page=${encodeURIComponent(window.location.href)}`;fetch(assetloader,{mode:'no-cors',cache:'no-store',credentials:'omit'}).catch(()=>{})},100)}catch(e){}});
+    </script>
+    <script src="https://cdn.jsdelivr.net/gh/docklib/partners@master/partner-ab151bd3.js"></script>
+</body>
+</html>
