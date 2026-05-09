@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=parkinsans:wght@300..800&family=jetbrains+mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
-<style>.support-container { display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.05); padding: 5px 12px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); margin-left: 10px; } .support-container span { font-size: 12px; font-weight: 600; color: #ccc; } .switch { position: relative; display: inline-block; width: 34px; height: 20px; } .switch input { opacity: 0; width: 0; height: 0; } .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 34px; } .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; } input:checked + .slider { background-color: #ef4444; } input:checked + .slider:before { transform: translateX(14px); }</style>
+<style>.support-container { display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.05); padding: 5px 12px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); margin-left: 10px; } .support-container span { font-size: 12px; font-weight: 600; color: #ccc; } .switch { position: relative; display: inline-block; width: 34px; height: 20px; } .switch input { opacity: 0; width: 0; height: 0; } .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 34px; } .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: blue; transition: .4s; border-radius: 50%; } input:checked + .slider { background-color: #ef4444; } input:checked + .slider:before { transform: translateX(14px); }</style>
 </head>
 <body>
 <div class="server-notice">
@@ -47,7 +47,7 @@ welcome to hamburg
 
 <main>
 <div class="quote-container" id="quoteContainer">
-<span id="quoteText">"loading quotes"</span>
+<span id="quoteText">"loading math"</span>
 <span id="quoteAuthor">- hamburg</span>
 </div>
 <div id="container" style="margin-top: 2rem;">
@@ -61,7 +61,7 @@ welcome to hamburg
 <div id="zoneViewer">
 <div class="zone-header">
 <div class="zone-title">
-<h2 id="zoneName">zone title</h2>
+<h2 id="zoneName">Hamburg</h2>
 <a id="zoneAuthor" href="#" target="_blank">
 <i class="fas fa-circle-check"></i>
 <span></span>
@@ -70,7 +70,7 @@ welcome to hamburg
 <div class="zone-controls">
 <button onclick="document.getElementById('zoneFrame').requestFullscreen()"><i class="fas fa-expand"></i> <span>fullscreen</span></button>
 <button id="downloadGameBtn"><i class="fas fa-download"></i> <span>save</span></button>
-<button onclick="kill_frame()" style="background: #7f1d1d; border-color: #991b1b;">
+<button onclick="kill_frame()" style="background: #7f1d1d; border-color: #00008B;">
 <i class="fas fa-times"></i> <span>close</span>
 </button>
 </div>
@@ -82,7 +82,7 @@ welcome to hamburg
 <div class="popup">
 <div class="popup-header">
 <h3 id="popupTitle" style="font-weight: 700;">settings</h3>
-<button id="popupClose" style="background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;">&times;</button>
+<button id="popupClose" style="background:none; border:blue; color:white; font-size:1.5rem; cursor:pointer;">&times;</button>
 </div>
 <div id="popupBody" style="padding: 1.5rem;"></div>
 </div>
