@@ -1,0 +1,253 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>braybray clicker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #1e1e1e, #2c2c2c);
+      color: white;
+      font-family: 'Fredoka', sans-serif;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-transform: lowercase;
+      transition: background 1s ease;
+    }
+
+    .gigachad {
+      width: 400px;
+      transition: transform 0.15s ease;
+      margin-bottom: 20px;
+    }
+
+    .gigachad.pop {
+      transform: scale(1.05);
+    }
+
+    .click-button {
+      font-size: 40px;
+      padding: 20px 50px;
+      border: none;
+      border-radius: 15px;
+      background: linear-gradient(45deg, #ff007f, #ffdb4d, #00ffe0);
+      color: #000;
+      cursor: pointer;
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
+      animation: shine 2s infinite linear;
+      position: relative;
+      z-index: 10;
+      text-transform: lowercase;
+    }
+
+    @keyframes shine {
+      0% { box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); }
+      50% { box-shadow: 0 0 30px rgba(255, 255, 255, 1); }
+      100% { box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); }
+    }
+
+    .counter {
+      font-size: 30px;
+      margin-bottom: 20px;
+      color: #ffdb4d;
+      text-shadow: 0 0 5px #ffdb4d;
+      text-transform: lowercase;
+    }
+
+    .floating-gigachad {
+      position: absolute;
+      width: 50px;
+      animation: floatGigachads 10s infinite ease-in-out, bounce 1s infinite alternate;
+    }
+
+    @keyframes floatGigachads {
+      0% { transform: translate(0, 0); }
+      25% { transform: translate(100px, 50px); }
+      50% { transform: translate(200px, 100px); }
+      75% { transform: translate(300px, 50px); }
+      100% { transform: translate(400px, 0); }
+    }
+
+    @keyframes bounce {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-30px); }
+      100% { transform: translateY(0); }
+    }
+
+    .popup {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 250px;
+      background: #222;
+      color: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      z-index: 1000;
+      text-transform: lowercase;
+    }
+
+    .popup::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: white;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+
+    .popup.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .close-btn:hover {
+      color: #ddd;
+    }
+
+    /* Jumpscare */
+    .jumpscare {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 70vw;
+      max-width: 700px;
+      z-index: 2000;
+      display: none;
+    }
+
+    .jumpscare.show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <img id="gigachad" src="https://www.pngmart.com/files/23/Gigachad-PNG-Pic.png" alt="gigachad" class="gigachad">
+  <div class="counter" id="counter">clicks: 0</div>
+  <button class="click-button" onclick="handleClick()">click me!</button>
+
+  <!-- Popup -->
+  <div class="popup" id="popup">
+    <button class="close-btn" onclick="closePopup()">✖</button>
+    <p><strong>notify - braybray clicker</strong></p>
+    <p>you got 50 clicks! you get a braybray frenzy!</p>
+  </div>
+
+  <!-- Braybray frenzy sound -->
+  <audio id="frenzy-sound" src="https://raw.githubusercontent.com/blockzone/blockzone.github.io/main/sounds/moannnnnygs727272-made-with-DubbingAI.mp3" loop></audio>
+
+  <!-- Jumpscare Image + Sound -->
+  <img id="jumpscare-img" class="jumpscare" src="https://static.wikia.nocookie.net/b89a3a8c-8699-4d09-8d32-3d8c9eb5c5af/scale-to-width/755" alt="jumpscare">
+  <audio id="jumpscare-sound" src="https://raw.githubusercontent.com/blockzone/blockzone.github.io/main/sounds/five-nights-at-freddys-full-scream-sound_2-made-with-DubbingAI (1).mp3"></audio>
+
+  <script>
+    const gigachad = document.getElementById('gigachad');
+    const counterEl = document.getElementById('counter');
+    const frenzySound = document.getElementById('frenzy-sound');
+    const jumpscareImg = document.getElementById('jumpscare-img');
+    const jumpscareSound = document.getElementById('jumpscare-sound');
+    let clicks = parseInt(localStorage.getItem('clicks')) || 0;
+    let frenzyShown = false;
+    let jumpscareShown = false;
+    let clickMultiplier = 1;
+
+    counterEl.textContent = `clicks: ${clicks}`;
+
+    function handleClick() {
+      gigachad.classList.add('pop');
+      setTimeout(() => gigachad.classList.remove('pop'), 150);
+
+      clicks += clickMultiplier;
+      localStorage.setItem('clicks', clicks);
+      counterEl.textContent = `clicks: ${clicks}`;
+
+      if (clicks >= 50 && !frenzyShown) {
+        showPopup();
+        startBrayBrayFrenzy();
+        frenzyShown = true;
+      }
+
+      if (clicks >= 100 && !jumpscareShown) {
+        triggerJumpscare();
+        jumpscareShown = true;
+      }
+    }
+
+    function startBrayBrayFrenzy() {
+      document.body.style.background = 'linear-gradient(45deg, #ff007f, #ffdb4d, #00ffe0, #ff007f, #ffdb4d)';
+      document.body.style.animation = 'backgroundMove 10s linear infinite';
+
+      for (let i = 0; i < 50; i++) {
+        const img = document.createElement('img');
+        img.src = 'https://www.pngmart.com/files/23/Gigachad-PNG-Pic.png';
+        img.classList.add('floating-gigachad');
+        img.style.top = `${Math.random() * 100}vh`;
+        img.style.left = `${Math.random() * 100}vw`;
+        document.body.appendChild(img);
+      }
+
+      frenzySound.play();
+      clickMultiplier = 2;
+
+      setTimeout(() => stopBrayBrayFrenzy(), 10000);
+    }
+
+    function stopBrayBrayFrenzy() {
+      document.body.style.background = 'linear-gradient(135deg, #1e1e1e, #2c2c2c)';
+      clickMultiplier = 1;
+      document.querySelectorAll('.floating-gigachad').forEach(img => img.remove());
+      frenzySound.pause();
+      frenzySound.currentTime = 0;
+    }
+
+    function showPopup() {
+      const popup = document.getElementById("popup");
+      popup.classList.add("show");
+      setTimeout(() => closePopup(), 5000);
+    }
+
+    function closePopup() {
+      const popup = document.getElementById("popup");
+      popup.classList.remove("show");
+    }
+
+    function triggerJumpscare() {
+      jumpscareImg.classList.add('show');
+      jumpscareSound.play();
+
+      setTimeout(() => {
+        jumpscareImg.classList.remove('show');
+        jumpscareSound.pause();
+        jumpscareSound.currentTime = 0;
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
