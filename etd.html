@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earn to Die - Fullscreen</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        #game-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        ruffle-player {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+        
+        <embed 
+            src="https://cdn.jsdelivr.net/gh/thugaliciousbruh/newfuckassfilestorage@master/swf/earntodie.swf"
+            width="100%" 
+            height="100%"
+        >
+    </div>
+
+</body>
+</html>
