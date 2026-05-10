@@ -27,8 +27,8 @@ const internal_quotes = [{
     text: "byod cuming soon.",
     author: "primestar"
 }, {
-    text: "finally this site is almost done",
-    author: "primestar"
+    text: "h",
+    author: "bestspark"
 }, {
     text: "OMG hamburg is so tuff and the best site.",
     author: "everyone"
