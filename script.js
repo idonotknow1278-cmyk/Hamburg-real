@@ -357,7 +357,7 @@ function export_data() {
       , n = URL.createObjectURL(t)
       , a = document.createElement("a");
     a.href = n,
-    a.download = "nikehub_settings.json",
+    a.download = "hamburg_settings.json",
     a.click()
 }
 function import_data(e) {
