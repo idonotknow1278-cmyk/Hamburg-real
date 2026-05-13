@@ -253,7 +253,7 @@ function render_main(e, t, n) {
     a.innerHTML = "";
     let i = document.createElement("div");
     if (i.style = "width:100%; text-align:center; padding: 20px 0; grid-column: 1/-1;",
-    i.innerHTML = '<h1 style="font-weight: 800; text-transform: lowercase;"><span style="opacity:0.5;">discord.gg/nikehub</span></h1>',
+    i.innerHTML = '<h1 style="font-weight: 800; text-transform: lowercase;"><span style="opacity:0.5;">https://discord.gg/75EFWYYAXk/</span></h1>',
     a.appendChild(i),
     grid_loop(e, a),
     n && n.length > 0) {
