@@ -21,10 +21,10 @@ let mapped = new Map
     i: localStorage.getItem("cloakIcon") || "favicon.png"
 };
 const internal_quotes = [{
-    text: "You absolute buffoon.",
-    author: "primestar"
+    text: "WOAH HAMBURG IS LIKE THE BEST.",
+    author: "totally said by gn-math devs"
 }, {
-    text: "byod cuming soon.",
+    text: "cumming soon.",
     author: "primestar"
 }, {
     text: "h",
@@ -33,29 +33,29 @@ const internal_quotes = [{
     text: "OMG hamburg is so tuff and the best site.",
     author: "everyone"
 }, {
-    text: "bro lets go on the best site, hamburg.",
-    author: "you everyday"
+    text: "wait why is hamburg so peak.",
+    author: "totally said by truffled devs"
 }, {
     text: "W BestSpark❤️‍🩹",
     author: "primestar"
 }, {
-    text: "Why would bestspark add that to my code",
+    text: "i love m-",
     author: "primestar"
 }, {
-    text: "hamburg obviously mogs",
+    text: "block if gay highkey",
     author: "primestar"
 }, {
     text: "green apple",
-    author: "speed"
+    author: "ishowspeed"
 }, {
-    text: "hamburg sucks",
+    text: "this site looks buns",
     author: "random loser"
 }, {
     text: "thats why you have earwax in your ear🗣",
-    author: "some bum in my class"
+    author: "someone"
 }, {
     text: "primestar needs to get his act together - i had to edit his code for him",
-    author: "bestspark dude wtf"
+    author: "bestspark"
 }];
 function shuffle_q() {
     let e = document.getElementById("quoteText")
@@ -93,7 +93,7 @@ async function start_hub() {
         await sync_popularity(),
         render_main(cache_main, cache_v2, lumin_data);
         let o = document.getElementById("zoneCount");
-        o && (o.innerText = cache_main.length + cache_v2.length + lumin_data.length + " quizzes loaded")
+        o && (o.innerText = cache_main.length + cache_v2.length + lumin_data.length + " math problems loaded")
     } catch (l) {
         console.error("FATAL: Site failed to boot.", l);
         let s = document.getElementById("container");
@@ -140,7 +140,7 @@ function open_settings_ui() {
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
                     <button class="btn btn-secondary" onclick="launch_stealth()" style="font-size: 0.8rem;"><i class="fas fa-clone"></i> About:Blank</button>
-                    <a href="/dmca.html" class="btn btn-secondary" style="font-size: 0.8rem; text-decoration: none; display: flex; align-items: center; justify-content: center; background: #2c2c2c; color: #00008B; border: 1px solid #444;"><i class="fas fa-shield-alt"></i> DMCA</a>
+                    <a href="/dmca.html" class="btn btn-secondary" style="font-size: 0.8rem; text-decoration: none; display: flex; align-items: center; justify-content: center; background: #2c2c2c; color: #FFFFFF; border: 1px solid #444;"><i class="fas fa-shield-alt"></i> DMCA</a>
                 </div>
             </div>
             <div class="section-group">
