@@ -45,8 +45,8 @@ const internal_quotes = [{
     text: "block if gay highkey",
     author: "primestar"
 }, {
-    text: "green apple",
-    author: "ishowspeed"
+    text: "uh manga yeahhhh",
+    author: "kiz"
 }, {
     text: "this site looks buns",
     author: "random loser"
